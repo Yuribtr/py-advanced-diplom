@@ -14,6 +14,7 @@
 8. Bot supports timeout of client activity and close session if client is absent
 
 Block diagram of main work flow:
+![alt text](https://raw.githubusercontent.com/Yuribtr/py-advanced-diplom/master/block_diagram.png?raw=true)
 
 
 ## VKinder
