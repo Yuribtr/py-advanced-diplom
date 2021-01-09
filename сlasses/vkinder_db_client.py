@@ -1,3 +1,4 @@
+import json
 from сlasses.vk_api_classes import VKinderClient, VKinderSearch, log, clear_db
 import psycopg2
 import sqlalchemy as sa
@@ -10,16 +11,17 @@ from сlasses.vkinder_db_classes import Clients, Base, Searches, Users, ClientsU
 class VKinderDb:
 
     def __init__(self, db_name, db_login, db_password, db_driver='postgresql', db_host='localhost', db_port=5432,
-                 debug_mode=False, rebuild: bool = False):
+                 debug_mode=False):
         self.debug_mode = debug_mode
         self.__sqlalchemy = sa
         self.search_history_limit = 10
+        self.rebuild = self.load_config()['rebuild_tables']
         try:
             self.__engine = sa.create_engine(f'{db_driver}://{db_login}:{db_password}@{db_host}:{db_port}/{db_name}')
             self.__engine.connect().close()
             self.__session = sessionmaker(bind=self.__engine)()
             log(f'{type(self).__name__} successfully connected to DB', self.debug_mode)
-            if rebuild:
+            if self.rebuild:
                 log(f'Rebuilding tables...', self.debug_mode)
                 clear_db(sa, self.__engine)
                 Base.metadata.create_all(self.__engine)
@@ -32,6 +34,28 @@ class VKinderDb:
     @property
     def is_initialized(self):
         return self.__initialized
+
+    @staticmethod
+    def load_config(filename='options.cfg'):
+        rebuild_key = 'rebuild_tables'
+        rebuild_default_value = False
+        options_default = {rebuild_key: rebuild_default_value}
+        result = dict()
+        try:
+            with open(filename, encoding='utf-8', mode='r+') as file:
+                options = json.load(file)
+                rebuild_value = options.get(rebuild_key, False)
+                if not rebuild_value == rebuild_default_value:
+                    result.update({rebuild_key: rebuild_value})
+                else:
+                    result.update({rebuild_key: rebuild_default_value})
+                options_default[rebuild_key] = rebuild_default_value
+        except json.decoder.JSONDecodeError or FileNotFoundError:
+            result = options_default
+        finally:
+            with open(filename, encoding='utf-8', mode='w+') as file:
+                json.dump(options_default, file)
+        return result
 
     # @decorator_speed_meter(True)
     def save_client(self, client: VKinderClient, force_country_update=False):

@@ -21,9 +21,11 @@ class VKinderBot:
         self.cmd = Commands(COMMANDS)
         # countries received once per application launch (by request), as they almost doesn't changes
         self.countries = []
+        self.rebuild_tables = False
+
         self.vk_personal = VkApiClient(person_token, app_id, debug_mode=debug_mode)
         self.db = VKinderDb(db_name, db_login, db_password, db_driver=db_driver, db_host=db_host, db_port=db_port,
-                            debug_mode=debug_mode, rebuild=False)
+                            debug_mode=debug_mode)
         self.__initialized = self.vk_personal.is_initialized and self.db.is_initialized
         self.vk_group = vk_api.VkApi(token=group_token)
         try:

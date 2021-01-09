@@ -2,8 +2,9 @@
 
 
 ## Solution
-** Before using pls rename a file "default_keys.py" to "keys.py" and put inside your VK tokens and DB info. Also, please make rebuild=True at VKinderBot __init__ for creating tables. After first launch, you have to revert this option to rebuild=False.
-!!!Warning!!! Option rebuild=True will drop ALL tables in given DB each time when application starts.  
+** Before using pls rename a file "default_keys.py" to "keys.py" and put inside your VK tokens and DB info. 
+
+** At first launch pls set {"rebuild_tables": true} in file "options.cfg". When this flag set tables in given DB will be dropped and recreated. All data in DB will be lost. After first launch this flag will return to false automatically. 
 
 
 1. Bot uses 2 tokens (group token for chat conversations with clients, personal token for making search of users)
