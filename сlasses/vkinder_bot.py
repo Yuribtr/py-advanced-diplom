@@ -441,7 +441,7 @@ class VKinderBot:
         result = None
         try:
             country_id = int(country_id)
-            if 0 < country_id <= len(self.countries):
+            if 0 < country_id <= len(client.found_countries):
                 result = country_id
         except ValueError:
             pass
