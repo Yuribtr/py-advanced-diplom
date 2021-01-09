@@ -16,6 +16,9 @@
 Block diagram of main work flow:
 ![alt text](https://raw.githubusercontent.com/Yuribtr/py-advanced-diplom/master/block_diagram.png?raw=true)
 
+DB diagram:
+![alt text](https://raw.githubusercontent.com/Yuribtr/py-advanced-diplom/master/db_diagram.jpg?raw=true)
+
 
 ## VKinder
 Все слышали про известное приложение для знакомств - Tinder. Приложение предоставляет простой интерфейс для выбора понравившегося человека. Сейчас в Google Play более 100 миллионов установок.
