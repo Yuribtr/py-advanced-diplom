@@ -1,0 +1,26 @@
+{
+  "response": [
+    {
+      "first_name": "Павел",
+      "id": 1,
+      "last_name": "Дуров",
+      "can_access_closed": true,
+      "is_closed": false,
+      "sex": 2,
+      "domain": "durov",
+      "bdate": "10.10.1984",
+      "city": {
+        "id": 2,
+        "title": "Санкт-Петербург"
+      },
+      "country": {
+        "id": 1,
+        "title": "Россия"
+      },
+      "last_seen": {
+        "platform": 7,
+        "time": 1585047104
+      }
+    }
+  ]
+}
