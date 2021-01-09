@@ -2,8 +2,9 @@
 
 
 ## Solution
-** Before using pls rename a file "default_keys.py" to "keys.py" and put inside your VK tokens and DB info.
-Also, please once make rebuild=True at VKinderBot __init__ for creating tables. After first launch, you have to revert this option to rebuild=False.
+** Before using pls rename a file "default_keys.py" to "keys.py" and put inside your VK tokens and DB info. Also, please make rebuild=True at VKinderBot __init__ for creating tables. After first launch, you have to revert this option to rebuild=False.
+!!!Warning!!! Option rebuild=True will drop ALL tables in given DB each time when application starts.  
+
 
 1. Bot uses 2 tokens (group token for chat conversations with clients, personal token for making search of users)
 2. Bot can receive and remember some client's preferences (country, search history, lists of rated users) which stored in DB
