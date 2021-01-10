@@ -22,3 +22,4 @@ class TestVkApiClient(unittest.TestCase):
             assert len(self.api.get_countries()) == 234
             assert len(self.api.search_cities(country_id=1, city_name='Нижн')) == 80
             assert len(self.api.search_users(q='Дуров')) == 16
+            assert len(self.api.get_user_photos(owner_id='1', needed_qty=1000)) == 9

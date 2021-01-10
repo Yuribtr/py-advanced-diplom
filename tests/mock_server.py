@@ -11,6 +11,7 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
     COUNTRIES_GET = re.compile(r'database.getCountries')
     CITIES_GET = re.compile(r'database.getCities')
     SEARCH_USERS_GET = re.compile(r'users.search')
+    PHOTOS_GET = re.compile(r'photos.get')
 
     def do_GET(self):
         if re.search(self.USER_GET, self.path):
@@ -24,6 +25,9 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
 
         elif re.search(self.SEARCH_USERS_GET, self.path):
             self.send('responses\\users.search.json')
+
+        elif re.search(self.PHOTOS_GET, self.path):
+            self.send('responses\\photos.get.json')
 
         else:
             self.send(fail=True)
