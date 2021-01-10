@@ -14,7 +14,7 @@ class TestVKinderDb(unittest.TestCase):
         cls.mock_server_port = get_free_port()
         start_mock_server(cls.mock_server_port)
 
-    def test_db_init(self):
+    def test_client_save_load(self):
         assert self.db.is_initialized
         mock_users_url = 'http://localhost:{port}/'.format(port=self.mock_server_port)
         with mock.patch('сlasses.vk_api_client.VkApiClient.API_BASE_URL', new_callable=mock.PropertyMock) as mock_f:
@@ -26,3 +26,9 @@ class TestVKinderDb(unittest.TestCase):
             user = self.api.get_users('1')[0]
             client = VKinderClient(user)
             self.db.save_client(client)
+            client_db = self.db.load_client_from_db('1')
+            assert client_db
+            client = VKinderClient(client_db)
+            assert client.vk_id == '1'
+            assert client.fname == 'Павел'
+            assert client.lname == 'Дуров'

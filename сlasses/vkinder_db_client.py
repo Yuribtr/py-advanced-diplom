@@ -58,6 +58,16 @@ class VKinderDb:
         return result
 
     # @decorator_speed_meter(True)
+    def load_client_from_db(self, vk_id: str):
+        """
+        Gets client by its VK id
+        """
+        log(f'Loading client info from DB', is_debug_msg=self.debug_mode)
+        client = self.__session.query(Clients).filter(Clients.vk_id == vk_id).first()
+        if client:
+            return client.convert_to_ApiUser()
+
+    # @decorator_speed_meter(True)
     def save_client(self, client: VKinderClient, force_country_update=False):
         """
         Manual UPSERT of single client in DB
@@ -112,7 +122,7 @@ class VKinderDb:
         if client.search.id:
             return
         search_history = self.__session.query(Searches.id).filter(Searches.client_id == client.db_id).order_by(
-            Searches.updated.desc()).limit(self.search_history_limit-1).all()
+            Searches.updated.desc()).limit(self.search_history_limit - 1).all()
         delete_expr = delete(Searches).where(not_(Searches.id.in_(search_history)))
         self.__session.execute(delete_expr)
         search = Searches(client_id=client.db_id, min_age=client.search.min_age, max_age=client.search.max_age,

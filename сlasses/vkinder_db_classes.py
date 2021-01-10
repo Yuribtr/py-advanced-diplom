@@ -29,6 +29,29 @@ class Clients(Base):
     rated_users = relationship('Users', secondary='clients_users')
     tagged_photos = relationship('Photos', secondary='clients_userphotos')
 
+    def convert_to_ApiUser(self, rating_id=RATINGS['new']) -> ApiUser:
+        """
+        Needed when we restore from DB previously saved users
+        """
+        bdate = [str(self.birth_day) if self.birth_day is not None else '',
+                 str(self.birth_month) if self.birth_month is not None else '',
+                 str(self.birth_year) if self.birth_year is not None else '']
+        row = {'id': self.vk_id,
+               'first_name': self.fname,
+               'last_name': self.lname,
+               'sex': self.sex_id,
+               'country': {
+                   'id': self.country_id,
+                   'title': self.country_name
+               },
+               'last_seen': {
+                   'time': None,
+               },
+               'domain': self.domain,
+               'bdate': '.'.join(bdate),
+               }
+        return ApiUser(row, rating_id=rating_id)
+
 
 class Users(Base):
     __tablename__ = 'users'
