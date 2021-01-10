@@ -11,6 +11,7 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
     COUNTRIES_GET = re.compile(r'database.getCountries')
     CITIES_GET = re.compile(r'database.getCities')
     SEARCH_USERS_GET = re.compile(r'users.search')
+    SEARCH_USER_BABYCH = re.compile(r'babych')
     PHOTOS_GET = re.compile(r'photos.get')
 
     def do_GET(self):
@@ -24,7 +25,10 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
             self.send('responses\\database.getCities.json')
 
         elif re.search(self.SEARCH_USERS_GET, self.path):
-            self.send('responses\\users.search.json')
+            if re.search(self.SEARCH_USER_BABYCH, self.path):
+                self.send('responses\\users.search_babych.json')
+            else:
+                self.send('responses\\users.search.json')
 
         elif re.search(self.PHOTOS_GET, self.path):
             self.send('responses\\photos.get.json')

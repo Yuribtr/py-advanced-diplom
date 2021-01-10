@@ -123,13 +123,15 @@ class VKinderDb:
             return
         search_history = self.__session.query(Searches.id).filter(Searches.client_id == client.db_id).order_by(
             Searches.updated.desc()).limit(self.search_history_limit - 1).all()
-        delete_expr = delete(Searches).where(not_(Searches.id.in_(search_history)))
+        delete_expr = delete(Searches).where(and_(not_(Searches.id.in_(search_history)), Searches.client_id == client.db_id))
         self.__session.execute(delete_expr)
+        self.__session.commit()
         search = Searches(client_id=client.db_id, min_age=client.search.min_age, max_age=client.search.max_age,
                           sex_id=client.search.sex_id, status_id=client.search.status_id, city_id=client.search.city_id,
                           city_name=client.search.city_name, updated=func.now())
         self.__session.add(search)
         self.__session.commit()
+
         # load new id from base because new search was just created
         client.search.id = search.id
 
