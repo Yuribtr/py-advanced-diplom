@@ -47,6 +47,8 @@ class VKinderBot:
         """
         Sends message with smart break using VK max message size, splits message by specified dividers
         """
+        # message += f'\n[step={get_dict_key_by_value(STATUSES, client.status)}, ' \
+        #            f'фильтр: {get_dict_key_by_value(RATINGS, client.rating_filter)}]' if self.debug_mode else ''
         for msg in break_str(message, max_size=MAX_MSG_SIZE):
             self.vk_api.messages.send(peer_id=client.vk_id, message=msg, attachment=attachment,
                                       random_id=randrange(10 ** 7), keyboard=keyboard)
@@ -521,6 +523,9 @@ class VKinderBot:
             keyboard = self.cmd.kb(['back', 'quit'])
             self.send_msg(client, '\n'.join(history), keyboard=keyboard)
             self.send_msg(client, PHRASES['choose_search_history_number'])
+        else:
+            self.send_msg(client, PHRASES['no_search_history'])
+            self.do_propose_start_search(client)
 
     # @decorator_speed_meter(True)
     def do_propose_start_search(self, client: VKinderClient):
@@ -555,8 +560,12 @@ class VKinderBot:
 
     # @decorator_speed_meter(True)
     def do_say_goodbye(self, client: VKinderClient):
-        keyboard = self.cmd.kb(['new search', 'show history', None, 'liked', 'disliked', 'banned'])
-        self.send_msg(client, PHRASES['goodbye_x'].format(client.fname), keyboard=keyboard)
+        if len(client.searches) == 0:
+            keyboard = self.cmd.kb(['yes', 'no'])
+            self.send_msg(client, PHRASES['goodbye_x'].format(client.fname), keyboard=keyboard)
+        else:
+            keyboard = self.cmd.kb(['new search', 'show history', None, 'liked', 'disliked', 'banned', None, 'quit'])
+            self.send_msg(client, PHRASES['goodbye_x'].format(client.fname), keyboard=keyboard)
         self.clients_pool.pop(client.vk_id)
 
 

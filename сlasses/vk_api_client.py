@@ -466,7 +466,7 @@ class VkApiClient:
         if not self.__initialized:
             log(f'Error in get_users: {type(self).__name__} not initialized', self.debug_mode)
             return result
-        log(f'\nGetting users...', self.debug_mode)
+        log(f'Getting users...', self.debug_mode)
         users = self.__get_users(user_ids=user_ids, fields=fields)
         if not users.success:
             log(f'Getting users failed: {users.message}', self.debug_mode)

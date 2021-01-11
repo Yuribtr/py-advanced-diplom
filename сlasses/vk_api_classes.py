@@ -242,15 +242,17 @@ def last_seen(timestamp: int) -> str:
     return result
 
 
-def log(message, is_debug_msg=False, sep=' '):
+def log(message, is_debug_msg=False, sep='\n'):
     """
     Log messages to console if debug message flag set
     """
     if is_debug_msg:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S:%f")
         if type(message) in [list, dict, tuple, set]:
+            message = [f'{now} - {x}' for x in message]
             print(*message, sep=sep)
         else:
-            print(message, sep=sep)
+            print(f'{now} - {message}', sep=sep)
     else:
         return
 

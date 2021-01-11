@@ -134,6 +134,7 @@ class VKinderDb:
 
         # load new id from base because new search was just created
         client.search.id = search.id
+        client.searches.append(client.search)
 
     # @decorator_speed_meter(True)
     def save_users(self, client: VKinderClient):
